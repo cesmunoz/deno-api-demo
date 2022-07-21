@@ -1,6 +1,5 @@
-import { oak } from "./deps.ts";
+import { Application, isHttpError, Status } from "./deps.ts";
 import { buildRoutes } from "./utils.ts";
-const { Application, isHttpError, Status } = oak;
 
 const app = new Application();
 

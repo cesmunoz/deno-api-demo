@@ -1,5 +1,4 @@
-import { oak } from "../deps.ts";
-const { Router } = oak;
+import { Router } from "../deps.ts";
 
 const BASE_URL = "/";
 
