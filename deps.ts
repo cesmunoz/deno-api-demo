@@ -1,1 +1,1 @@
-export { Application, Router, isHttpError, Status } from "https://deno.land/x/oak/mod.ts";
+export { Application, Router, isHttpError, Status } from "https://deno.land/x/oak@v10.6.0/mod.ts";
