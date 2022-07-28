@@ -1,4 +1,4 @@
-import bookRouter from "./book.routers.ts";
-import postsRouter from "./posts.routers.ts";
+import helloRouter from "./helloRouter.ts";
+import postsRouter from "./postsRouter.ts";
 
-export default [bookRouter, postsRouter];
+export default [helloRouter, postsRouter];

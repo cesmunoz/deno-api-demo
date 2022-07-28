@@ -7,4 +7,3 @@ export function buildRoutes(app: Application) {
     app.use(router.allowedMethods());
   });
 }
-
