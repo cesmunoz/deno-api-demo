@@ -1,36 +1,41 @@
 import { Collection, Document } from "../../deps.ts";
 import DataAccess from "../dataAccess/dataAccess.ts";
 
-let collection: Collection<Document>;
+class RepositoryBase {
+  public collection: Collection<Document>;
 
-const getAll = async (filters: any) => collection.find();
+  constructor(collectionName: string) {
+    this.collection = DataAccess.collection(collectionName);
+  }
 
-const getById = async (id: string) => collection.find({ _id: id });
+  async getAll(filters: any) {
+    const result = await this.collection.find({});
+    return result;
+  }
 
-const create = async (model: any) => collection.insertOne(model);
+  async getById(id: string) {
+    const result = await this.collection.find({ _id: id });
+    return result;
+  }
 
-const update = async (model: any) => {
-  const { id, ...props } = model;
-  await collection.updateOne({ _id: id }, { props });
-};
+  async create(model: any) {
+    const result = await this.collection.insertOne(model);
+    return result;
+  }
 
-const remove = async (id: string) => collection.delete({ _id: id });
+  async update(model: any) {
+    const { id, ...props } = model;
+    await this.collection.updateOne({ _id: id }, { $set: props });
+  }
 
-const query = async (filter: any) => collection.find(filter);
+  async remove(id: string) {
+    await this.collection.delete({ _id: id });
+  }
 
-const buildRepository = (collectionName: string) => {
-  collection = DataAccess.collection(collectionName);
-  console.log(collection);
+  async query(filters: any) {
+    const result = await this.collection.find(filters);
+    return result;
+  }
+}
 
-  return {
-    collection,
-    getAll,
-    getById,
-    create,
-    update,
-    remove,
-    query,
-  };
-};
-
-export default buildRepository;
+export default RepositoryBase;

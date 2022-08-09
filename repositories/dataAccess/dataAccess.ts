@@ -1,20 +1,11 @@
-import { Database, MongoClient } from "../../deps.ts";
+import { config, MongoClient } from "../../deps.ts";
 
-class DataAccess {
-  public client!: Database;
+const { DB_NAME, DB_USER, DB_PASSWORD } = config();
 
-  constructor() {
-    this.connect();
-  }
+const client = new MongoClient();
+await client.connect(
+  `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.2qti8.mongodb.net/?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`
+);
+const db = client.database(DB_NAME);
 
-  async connect() {
-    const client = new MongoClient();
-    await client.connect(
-      "mongodb+srv://appUser:appPassword@cluster0.2qti8.mongodb.net/?retryWrites=true&w=majority"
-    );
-    const databaseClient = client.database("denotest");
-    this.client = databaseClient;
-  }
-}
-
-export default new DataAccess().client; 
+export default db;

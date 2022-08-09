@@ -1,7 +1,10 @@
 import { Router } from "../deps.ts";
-import { todosController as controller } from "../controllers/index.ts";
+import { TYPES } from "../constants.ts";
+import diContainer from "../diContainer.ts";
+import TodosController from "../controllers/todos.controller.ts";
 
 const BASE_URL = "/todos";
+const controller: TodosController = diContainer.resolve(TYPES.TodosController);
 
 const router = new Router();
 router.get(BASE_URL, controller.getAll);
