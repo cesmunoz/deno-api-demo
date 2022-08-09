@@ -1,8 +1,12 @@
 import { Todo } from "../models/index.ts";
+import repository from "../repositories/todosRepository.ts";
 
-// deno-lint-ignore no-explicit-any
-export const getAll = (_filters: any) => "Return all";
-export const getById = (id: string) => id;
-export const create = (model: Todo) => model;
-export const update = (model: Todo) => model;
-export const remove = (id: string) => id;
+export const getAll = async (filters: any) => await repository.getAll(filters);
+
+export const getById = async (id: string) => repository.getById(id);
+
+export const create = async (model: Todo) => repository.create(model);
+
+export const update = async (model: Todo) => repository.update(model);
+
+export const remove = async (id: string) => repository.remove(id);

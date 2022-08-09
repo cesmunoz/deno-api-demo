@@ -1,26 +1,42 @@
 import { Context, helpers } from "../deps.ts";
+import * as service from "../services/todosService.ts";
 
-const getAll = (ctx: Context) => {
-  ctx.response.body = "Hello World from todos";
+const getAll = async (ctx: Context) => {
+  ctx.response.body = await service.getAll(null);
 };
 
-const getById = (ctx: Context) => {
+const getById = async (ctx: Context) => {
   const { id } = helpers.getQuery(ctx, { mergeParams: true });
-  ctx.response.body = `Hello World from todos with id ${id}`;
+  ctx.response.body = await service.getById(id);
 };
 
 const create = (ctx: Context) => {
-  ctx.response.body = "Create a todo";
+  const result = service.create({
+    id: "1",
+    title: "todo task",
+    description: "this is a description",
+    completed: false,
+    dueDate: new Date(),
+  });
+  ctx.response.body = result;
 };
 
-const update = (ctx: Context) => {
+const update = async (ctx: Context) => {
   const { id } = helpers.getQuery(ctx, { mergeParams: true });
-  ctx.response.body = `Update a todo with id ${id}`;
+  const result = await service.update({
+    id,
+    title: "todo task",
+    description: "this is a description",
+    completed: false,
+    dueDate: new Date(),
+  });
+  ctx.response.body = result;
 };
 
-const remove = (ctx: Context) => {
+const remove = async (ctx: Context) => {
   const { id } = helpers.getQuery(ctx, { mergeParams: true });
-  ctx.response.body = `Remove a todo with id ${id}`;
+  await service.remove(id);
+  ctx.response.body = id;
 };
 
 export default {
