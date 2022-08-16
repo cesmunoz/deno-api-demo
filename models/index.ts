@@ -8,4 +8,12 @@ export const Todo = z.object({
   dueDate: z.date().optional(),
 });
 
+export const User = z.object({
+  id: z.string().default(v4.generate),
+  name: z.string(),
+  lastName: z.string(),
+  email: z.string(),
+});
+
+export type User = z.infer<typeof User>;
 export type Todo = z.infer<typeof Todo>;
