@@ -1,4 +1,4 @@
-import { Collection, Document } from "../../deps.ts";
+import { Collection, Document, ObjectId } from "../../deps.ts";
 import DataAccess from "../dataAccess/dataAccess.ts";
 
 class RepositoryBase {
@@ -14,7 +14,8 @@ class RepositoryBase {
   }
 
   async getById(id: string) {
-    const result = await this.collection.find({ _id: id });
+    const _id = new ObjectId(id);
+    const result = await this.collection.find({ _id });
     return result;
   }
 
@@ -24,12 +25,13 @@ class RepositoryBase {
   }
 
   async update(model: any) {
-    const { id, ...props } = model;
-    await this.collection.updateOne({ _id: id }, { $set: props });
+    const { _id, ...props } = model;
+    await this.collection.updateOne({ _id }, { $set: props });
   }
 
   async remove(id: string) {
-    await this.collection.delete({ _id: id });
+    const _id = new ObjectId(id);
+    await this.collection.delete({ _id });
   }
 
   async query(filters: any) {

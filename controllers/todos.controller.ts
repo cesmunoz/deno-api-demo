@@ -1,5 +1,6 @@
 import { TYPES } from "../constants.ts";
 import { Context, helpers, Inject, Injectable } from "../deps.ts";
+import { Todo } from "../models/index.ts";
 import TodosService from "../services/todos.service.ts";
 
 @Injectable()
@@ -15,28 +16,36 @@ export class TodosController {
     ctx.response.body = await this.service.getById(id);
   };
 
-  create = (ctx: Context) => {
-    const result = this.service.create({
-      id: "1",
-      title: "todo task",
-      description: "this is a description",
-      completed: false,
-      dueDate: new Date(),
-    });
+  create = async (ctx: Context) => {
+    const body = ctx.request.body();
+    const bodyRequest = await body.value;
+
+    const request = {
+      ...bodyRequest,
+      ...(bodyRequest.dueDate && { dueDate: new Date(bodyRequest.dueDate) }),
+    };
+
+    const model = Todo.parse(request);
+
+    const result = this.service.create(model);
     ctx.response.body = result;
   };
 
   update = async (ctx: Context) => {
     const { id } = helpers.getQuery(ctx, { mergeParams: true });
-    await this.service.update({
-      id,
-      title: "todo task",
-      description: "this is a description",
-      completed: false,
-      dueDate: new Date(),
-    });
 
-    ctx.response.body = id;
+    const body = ctx.request.body();
+    const bodyRequest = await body.value;
+
+    const request = {
+      _id: id,
+      ...bodyRequest,
+      ...(bodyRequest.dueDate && { dueDate: new Date(bodyRequest.dueDate) }),
+    };
+
+    const model = Todo.parse(request);
+    await this.service.update(model);
+    ctx.response.body = model;
   };
 
   remove = async (ctx: Context) => {
